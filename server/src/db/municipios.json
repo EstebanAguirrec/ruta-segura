@@ -1,0 +1,698 @@
+[
+  {
+    "codigoDane": "25001",
+    "nombre": "Agua de Dios",
+    "latitud": 4.375309,
+    "longitud": -74.669221
+  },
+  {
+    "codigoDane": "25019",
+    "nombre": "Albán",
+    "latitud": 4.878022,
+    "longitud": -74.438261
+  },
+  {
+    "codigoDane": "25035",
+    "nombre": "Anapoima",
+    "latitud": 4.562737,
+    "longitud": -74.528676
+  },
+  {
+    "codigoDane": "25040",
+    "nombre": "Anolaima",
+    "latitud": 4.7617,
+    "longitud": -74.46384
+  },
+  {
+    "codigoDane": "25599",
+    "nombre": "Apulo",
+    "latitud": 4.520304,
+    "longitud": -74.593926
+  },
+  {
+    "codigoDane": "25053",
+    "nombre": "Arbeláez",
+    "latitud": 4.272534,
+    "longitud": -74.414901
+  },
+  {
+    "codigoDane": "25086",
+    "nombre": "Beltrán",
+    "latitud": 4.802832,
+    "longitud": -74.741666
+  },
+  {
+    "codigoDane": "25095",
+    "nombre": "Bituima",
+    "latitud": 4.872171,
+    "longitud": -74.539609
+  },
+  {
+    "codigoDane": "25099",
+    "nombre": "Bojacá",
+    "latitud": 4.737205,
+    "longitud": -74.344594
+  },
+  {
+    "codigoDane": "25120",
+    "nombre": "Cabrera",
+    "latitud": 3.985164,
+    "longitud": -74.484549
+  },
+  {
+    "codigoDane": "25123",
+    "nombre": "Cachipay",
+    "latitud": 4.730957,
+    "longitud": -74.435711
+  },
+  {
+    "codigoDane": "25126",
+    "nombre": "Cajicá",
+    "latitud": 4.920009,
+    "longitud": -74.02298
+  },
+  {
+    "codigoDane": "25148",
+    "nombre": "Caparrapí",
+    "latitud": 5.34758,
+    "longitud": -74.491045
+  },
+  {
+    "codigoDane": "25151",
+    "nombre": "Cáqueza",
+    "latitud": 4.404112,
+    "longitud": -73.946473
+  },
+  {
+    "codigoDane": "25154",
+    "nombre": "Carmen de Carupa",
+    "latitud": 5.349119,
+    "longitud": -73.901357
+  },
+  {
+    "codigoDane": "25168",
+    "nombre": "Chaguaní",
+    "latitud": 4.948916,
+    "longitud": -74.593455
+  },
+  {
+    "codigoDane": "25175",
+    "nombre": "Chía",
+    "latitud": 4.866508,
+    "longitud": -74.05
+  },
+  {
+    "codigoDane": "25178",
+    "nombre": "Chipaque",
+    "latitud": 4.442671,
+    "longitud": -74.044876
+  },
+  {
+    "codigoDane": "25181",
+    "nombre": "Choachí",
+    "latitud": 4.527048,
+    "longitud": -73.922894
+  },
+  {
+    "codigoDane": "25183",
+    "nombre": "Chocontá",
+    "latitud": 5.145224,
+    "longitud": -73.683533
+  },
+  {
+    "codigoDane": "25200",
+    "nombre": "Cogua",
+    "latitud": 5.061842,
+    "longitud": -73.978497
+  },
+  {
+    "codigoDane": "25214",
+    "nombre": "Cota",
+    "latitud": 4.812564,
+    "longitud": -74.102569
+  },
+  {
+    "codigoDane": "25224",
+    "nombre": "Cucunubá",
+    "latitud": 5.249795,
+    "longitud": -73.766113
+  },
+  {
+    "codigoDane": "25245",
+    "nombre": "El Colegio",
+    "latitud": 4.577951,
+    "longitud": -74.442261
+  },
+  {
+    "codigoDane": "25258",
+    "nombre": "El Peñón",
+    "latitud": 5.248747,
+    "longitud": -74.290207
+  },
+  {
+    "codigoDane": "25260",
+    "nombre": "El Rosal",
+    "latitud": 4.850589,
+    "longitud": -74.263103
+  },
+  {
+    "codigoDane": "25269",
+    "nombre": "Facatativá",
+    "latitud": 4.813353,
+    "longitud": -74.350085
+  },
+  {
+    "codigoDane": "25279",
+    "nombre": "Fómeque",
+    "latitud": 4.485474,
+    "longitud": -73.892523
+  },
+  {
+    "codigoDane": "25281",
+    "nombre": "Fosca",
+    "latitud": 4.339093,
+    "longitud": -73.93902
+  },
+  {
+    "codigoDane": "25286",
+    "nombre": "Funza",
+    "latitud": 4.710412,
+    "longitud": -74.201528
+  },
+  {
+    "codigoDane": "25288",
+    "nombre": "Fúquene",
+    "latitud": 5.403997,
+    "longitud": -73.795855
+  },
+  {
+    "codigoDane": "25290",
+    "nombre": "Fusagasugá",
+    "latitud": 4.336723,
+    "longitud": -74.37543
+  },
+  {
+    "codigoDane": "25293",
+    "nombre": "Gachalá",
+    "latitud": 4.693579,
+    "longitud": -73.520161
+  },
+  {
+    "codigoDane": "25295",
+    "nombre": "Gachancipá",
+    "latitud": 4.990947,
+    "longitud": -73.873464
+  },
+  {
+    "codigoDane": "25297",
+    "nombre": "Gachetá",
+    "latitud": 4.816411,
+    "longitud": -73.636377
+  },
+  {
+    "codigoDane": "25299",
+    "nombre": "Gama",
+    "latitud": 4.763325,
+    "longitud": -73.611037
+  },
+  {
+    "codigoDane": "25307",
+    "nombre": "Girardot",
+    "latitud": 4.313069,
+    "longitud": -74.798201
+  },
+  {
+    "codigoDane": "25312",
+    "nombre": "Granada",
+    "latitud": 4.519763,
+    "longitud": -74.350766
+  },
+  {
+    "codigoDane": "25317",
+    "nombre": "Guachetá",
+    "latitud": 5.383378,
+    "longitud": -73.686972
+  },
+  {
+    "codigoDane": "25320",
+    "nombre": "Guaduas",
+    "latitud": 5.072076,
+    "longitud": -74.603402
+  },
+  {
+    "codigoDane": "25322",
+    "nombre": "Guasca",
+    "latitud": 4.866719,
+    "longitud": -73.877143
+  },
+  {
+    "codigoDane": "25324",
+    "nombre": "Guataquí",
+    "latitud": 4.517517,
+    "longitud": -74.790058
+  },
+  {
+    "codigoDane": "25326",
+    "nombre": "Guatavita",
+    "latitud": 4.935211,
+    "longitud": -73.83293
+  },
+  {
+    "codigoDane": "25328",
+    "nombre": "Guayabal de Síquima",
+    "latitud": 4.877968,
+    "longitud": -74.467437
+  },
+  {
+    "codigoDane": "25335",
+    "nombre": "Guayabetal",
+    "latitud": 4.215306,
+    "longitud": -73.815107
+  },
+  {
+    "codigoDane": "25339",
+    "nombre": "Gutiérrez",
+    "latitud": 4.254679,
+    "longitud": -74.003042
+  },
+  {
+    "codigoDane": "25368",
+    "nombre": "Jerusalén",
+    "latitud": 4.562273,
+    "longitud": -74.695474
+  },
+  {
+    "codigoDane": "25372",
+    "nombre": "Junín",
+    "latitud": 4.79057,
+    "longitud": -73.662961
+  },
+  {
+    "codigoDane": "25377",
+    "nombre": "La Calera",
+    "latitud": 4.721104,
+    "longitud": -73.968161
+  },
+  {
+    "codigoDane": "25386",
+    "nombre": "La Mesa",
+    "latitud": 4.631028,
+    "longitud": -74.461588
+  },
+  {
+    "codigoDane": "25394",
+    "nombre": "La Palma",
+    "latitud": 5.358816,
+    "longitud": -74.391022
+  },
+  {
+    "codigoDane": "25398",
+    "nombre": "La Peña",
+    "latitud": 5.198945,
+    "longitud": -74.394105
+  },
+  {
+    "codigoDane": "25402",
+    "nombre": "La Vega",
+    "latitud": 4.997768,
+    "longitud": -74.336885
+  },
+  {
+    "codigoDane": "25407",
+    "nombre": "Lenguazaque",
+    "latitud": 5.306131,
+    "longitud": -73.711512
+  },
+  {
+    "codigoDane": "25426",
+    "nombre": "Machetá",
+    "latitud": 5.08007,
+    "longitud": -73.608226
+  },
+  {
+    "codigoDane": "25430",
+    "nombre": "Madrid",
+    "latitud": 4.732791,
+    "longitud": -74.265854
+  },
+  {
+    "codigoDane": "25436",
+    "nombre": "Manta",
+    "latitud": 5.009008,
+    "longitud": -73.540444
+  },
+  {
+    "codigoDane": "25438",
+    "nombre": "Medina",
+    "latitud": 4.506298,
+    "longitud": -73.348449
+  },
+  {
+    "codigoDane": "25473",
+    "nombre": "Mosquera",
+    "latitud": 4.70653,
+    "longitud": -74.221154
+  },
+  {
+    "codigoDane": "25483",
+    "nombre": "Nariño",
+    "latitud": 4.399837,
+    "longitud": -74.824732
+  },
+  {
+    "codigoDane": "25486",
+    "nombre": "Nemocón",
+    "latitud": 5.068705,
+    "longitud": -73.877888
+  },
+  {
+    "codigoDane": "25488",
+    "nombre": "Nilo",
+    "latitud": 4.305838,
+    "longitud": -74.620009
+  },
+  {
+    "codigoDane": "25489",
+    "nombre": "Nimaima",
+    "latitud": 5.125992,
+    "longitud": -74.38604
+  },
+  {
+    "codigoDane": "25491",
+    "nombre": "Nocaima",
+    "latitud": 5.069466,
+    "longitud": -74.379093
+  },
+  {
+    "codigoDane": "25513",
+    "nombre": "Pacho",
+    "latitud": 5.136907,
+    "longitud": -74.156132
+  },
+  {
+    "codigoDane": "25518",
+    "nombre": "Paime",
+    "latitud": 5.370487,
+    "longitud": -74.152213
+  },
+  {
+    "codigoDane": "25524",
+    "nombre": "Pandi",
+    "latitud": 4.190393,
+    "longitud": -74.486641
+  },
+  {
+    "codigoDane": "25530",
+    "nombre": "Paratebueno",
+    "latitud": 4.374832,
+    "longitud": -73.212825
+  },
+  {
+    "codigoDane": "25535",
+    "nombre": "Pasca",
+    "latitud": 4.308979,
+    "longitud": -74.302276
+  },
+  {
+    "codigoDane": "25572",
+    "nombre": "Puerto Salgar",
+    "latitud": 5.465413,
+    "longitud": -74.653695
+  },
+  {
+    "codigoDane": "25580",
+    "nombre": "Pulí",
+    "latitud": 4.682022,
+    "longitud": -74.71438
+  },
+  {
+    "codigoDane": "25592",
+    "nombre": "Quebradanegra",
+    "latitud": 5.118076,
+    "longitud": -74.48014
+  },
+  {
+    "codigoDane": "25594",
+    "nombre": "Quetame",
+    "latitud": 4.329884,
+    "longitud": -73.863214
+  },
+  {
+    "codigoDane": "25596",
+    "nombre": "Quipile",
+    "latitud": 4.74481,
+    "longitud": -74.533705
+  },
+  {
+    "codigoDane": "25612",
+    "nombre": "Ricaurte",
+    "latitud": 4.282113,
+    "longitud": -74.772861
+  },
+  {
+    "codigoDane": "25645",
+    "nombre": "San Antonio del Tequendama",
+    "latitud": 4.616138,
+    "longitud": -74.351443
+  },
+  {
+    "codigoDane": "25649",
+    "nombre": "San Bernardo",
+    "latitud": 4.179433,
+    "longitud": -74.42296
+  },
+  {
+    "codigoDane": "25653",
+    "nombre": "San Cayetano",
+    "latitud": 5.332938,
+    "longitud": -74.024754
+  },
+  {
+    "codigoDane": "25658",
+    "nombre": "San Francisco",
+    "latitud": 4.972917,
+    "longitud": -74.289672
+  },
+  {
+    "codigoDane": "25662",
+    "nombre": "San Juan de Rioseco",
+    "latitud": 4.847575,
+    "longitud": -74.621919
+  },
+  {
+    "codigoDane": "25718",
+    "nombre": "Sasaima",
+    "latitud": 4.962167,
+    "longitud": -74.432628
+  },
+  {
+    "codigoDane": "25736",
+    "nombre": "Sesquilé",
+    "latitud": 5.04476,
+    "longitud": -73.796099
+  },
+  {
+    "codigoDane": "25740",
+    "nombre": "Sibaté",
+    "latitud": 4.492625,
+    "longitud": -74.257874
+  },
+  {
+    "codigoDane": "25743",
+    "nombre": "Silvania",
+    "latitud": 4.381981,
+    "longitud": -74.405534
+  },
+  {
+    "codigoDane": "25745",
+    "nombre": "Simijaca",
+    "latitud": 5.505231,
+    "longitud": -73.850703
+  },
+  {
+    "codigoDane": "25754",
+    "nombre": "Soacha",
+    "latitud": 4.579268,
+    "longitud": -74.215463
+  },
+  {
+    "codigoDane": "25758",
+    "nombre": "Sopó",
+    "latitud": 4.915395,
+    "longitud": -73.943328
+  },
+  {
+    "codigoDane": "25769",
+    "nombre": "Subachoque",
+    "latitud": 4.929118,
+    "longitud": -74.172773
+  },
+  {
+    "codigoDane": "25772",
+    "nombre": "Suesca",
+    "latitud": 5.103495,
+    "longitud": -73.798227
+  },
+  {
+    "codigoDane": "25777",
+    "nombre": "Supatá",
+    "latitud": 5.06162,
+    "longitud": -74.235403
+  },
+  {
+    "codigoDane": "25779",
+    "nombre": "Susa",
+    "latitud": 5.455291,
+    "longitud": -73.813938
+  },
+  {
+    "codigoDane": "25781",
+    "nombre": "Sutatausa",
+    "latitud": 5.247482,
+    "longitud": -73.853159
+  },
+  {
+    "codigoDane": "25785",
+    "nombre": "Tabio",
+    "latitud": 4.916832,
+    "longitud": -74.096461
+  },
+  {
+    "codigoDane": "25793",
+    "nombre": "Tausa",
+    "latitud": 5.196333,
+    "longitud": -73.887813
+  },
+  {
+    "codigoDane": "25797",
+    "nombre": "Tena",
+    "latitud": 4.655286,
+    "longitud": -74.389193
+  },
+  {
+    "codigoDane": "25799",
+    "nombre": "Tenjo",
+    "latitud": 4.872014,
+    "longitud": -74.143724
+  },
+  {
+    "codigoDane": "25805",
+    "nombre": "Tibacuy",
+    "latitud": 4.348605,
+    "longitud": -74.452662
+  },
+  {
+    "codigoDane": "25807",
+    "nombre": "Tibirita",
+    "latitud": 5.052278,
+    "longitud": -73.504514
+  },
+  {
+    "codigoDane": "25815",
+    "nombre": "Tocaima",
+    "latitud": 4.459279,
+    "longitud": -74.636296
+  },
+  {
+    "codigoDane": "25817",
+    "nombre": "Tocancipá",
+    "latitud": 4.964641,
+    "longitud": -73.91207
+  },
+  {
+    "codigoDane": "25823",
+    "nombre": "Topaipí",
+    "latitud": 5.336224,
+    "longitud": -74.300626
+  },
+  {
+    "codigoDane": "25839",
+    "nombre": "Ubalá",
+    "latitud": 4.74762,
+    "longitud": -73.531489
+  },
+  {
+    "codigoDane": "25841",
+    "nombre": "Ubaque",
+    "latitud": 4.483788,
+    "longitud": -73.933477
+  },
+  {
+    "codigoDane": "25845",
+    "nombre": "Une",
+    "latitud": 4.40245,
+    "longitud": -74.025183
+  },
+  {
+    "codigoDane": "25851",
+    "nombre": "Útica",
+    "latitud": 5.19055,
+    "longitud": -74.483154
+  },
+  {
+    "codigoDane": "25506",
+    "nombre": "Venecia",
+    "latitud": 4.089056,
+    "longitud": -74.478301
+  },
+  {
+    "codigoDane": "25862",
+    "nombre": "Vergara",
+    "latitud": 5.117258,
+    "longitud": -74.346163
+  },
+  {
+    "codigoDane": "25867",
+    "nombre": "Vianí",
+    "latitud": 4.875208,
+    "longitud": -74.56132
+  },
+  {
+    "codigoDane": "25843",
+    "nombre": "Villa de San Diego de Ubaté",
+    "latitud": 5.307463,
+    "longitud": -73.814367
+  },
+  {
+    "codigoDane": "25871",
+    "nombre": "Villagómez",
+    "latitud": 5.273024,
+    "longitud": -74.195145
+  },
+  {
+    "codigoDane": "25873",
+    "nombre": "Villapinzón",
+    "latitud": 5.216393,
+    "longitud": -73.595704
+  },
+  {
+    "codigoDane": "25875",
+    "nombre": "Villeta",
+    "latitud": 5.012754,
+    "longitud": -74.469686
+  },
+  {
+    "codigoDane": "25878",
+    "nombre": "Viotá",
+    "latitud": 4.43935,
+    "longitud": -74.523131
+  },
+  {
+    "codigoDane": "25885",
+    "nombre": "Yacopí",
+    "latitud": 5.459272,
+    "longitud": -74.33806
+  },
+  {
+    "codigoDane": "25898",
+    "nombre": "Zipacón",
+    "latitud": 4.759932,
+    "longitud": -74.379566
+  },
+  {
+    "codigoDane": "25899",
+    "nombre": "Zipaquirá",
+    "latitud": 5.025477,
+    "longitud": -73.994444
+  }
+]

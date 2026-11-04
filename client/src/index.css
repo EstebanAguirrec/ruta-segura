@@ -1,0 +1,56 @@
+@import 'tailwindcss';
+
+@layer base {
+  html {
+    /* Permite ampliar el texto sin romper el diseño (WCAG 1.4.4). */
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply min-w-[320px] bg-slate-50 text-slate-900 antialiased;
+  }
+
+  :focus-visible {
+    @apply outline-3 outline-offset-2 outline-violet-700;
+  }
+}
+
+@layer components {
+  /* Objetivo táctil mínimo de 44 x 44 px en todos los controles. */
+  .btn,
+  .btn-primario,
+  .btn-secundario {
+    @apply inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center gap-2 rounded-lg px-4 py-2 text-center font-semibold no-underline transition-colors disabled:cursor-not-allowed disabled:opacity-60;
+  }
+  .btn-primario {
+    @apply bg-violet-800 text-white hover:bg-violet-900;
+  }
+  .btn-secundario {
+    @apply border border-slate-400 bg-white text-slate-900 hover:bg-slate-100;
+  }
+  .campo {
+    @apply block min-h-11 w-full rounded-lg border border-slate-500 bg-white px-3 py-2 text-base text-slate-900;
+  }
+  .campo[aria-invalid='true'] {
+    @apply border-2 border-red-700;
+  }
+  .etiqueta {
+    @apply mb-1 block font-semibold text-slate-900;
+  }
+  .error-campo {
+    @apply mt-1 text-sm font-medium text-red-800;
+  }
+}
+
+/* Marcadores del mapa: color e ícono por categoría (RF-07). */
+.marcador {
+  display: flex;
+  width: 32px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.5);
+  font-size: 16px;
+}

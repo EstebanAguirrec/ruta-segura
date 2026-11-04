@@ -1,0 +1,87 @@
+export class ApiError extends Error {
+  constructor(status, mensaje, campos) {
+    super(mensaje);
+    this.status = status;
+    this.campos = campos ?? {};
+  }
+}
+
+// El JWT vive solo en memoria: al recargar se recupera con la cookie HttpOnly.
+let accessToken = null;
+let renovacionEnCurso = null;
+let alExpirarSesion = () => {};
+
+export function configurarExpiracionDeSesion(callback) {
+  alExpirarSesion = callback;
+}
+
+async function peticion(ruta, { metodo = 'GET', cuerpo, conToken = true } = {}) {
+  let respuesta;
+  try {
+    respuesta = await fetch(`/api${ruta}`, {
+      method: metodo,
+      credentials: 'same-origin',
+      headers: {
+        ...(cuerpo !== undefined && { 'Content-Type': 'application/json' }),
+        ...(conToken && accessToken && { Authorization: `Bearer ${accessToken}` }),
+      },
+      body: cuerpo === undefined ? undefined : JSON.stringify(cuerpo),
+    });
+  } catch {
+    throw new ApiError(0, 'Sin conexión con el servidor. Revisa tu internet e intenta de nuevo');
+  }
+  if (respuesta.status === 204) return null;
+  const datos = await respuesta.json().catch(() => ({}));
+  if (!respuesta.ok) {
+    throw new ApiError(respuesta.status, datos.error ?? 'Ocurrió un error. Intenta de nuevo', datos.campos);
+  }
+  return datos;
+}
+
+function guardarSesion(sesion) {
+  accessToken = sesion.accessToken;
+  return sesion.usuaria;
+}
+
+// Una sola renovación a la vez: el refresh token rota y solo sirve una vez.
+export function renovarSesion() {
+  renovacionEnCurso ??= peticion('/auth/refresh', { metodo: 'POST', conToken: false })
+    .then(guardarSesion)
+    .finally(() => {
+      renovacionEnCurso = null;
+    });
+  return renovacionEnCurso;
+}
+
+async function peticionConSesion(ruta, opciones) {
+  try {
+    return await peticion(ruta, opciones);
+  } catch (error) {
+    if (error.status !== 401) throw error;
+  }
+  try {
+    await renovarSesion();
+  } catch (error) {
+    if (error.status === 401) {
+      accessToken = null;
+      alExpirarSesion();
+    }
+    throw error;
+  }
+  return peticion(ruta, opciones);
+}
+
+export const api = {
+  registrar: (datos) => peticion('/auth/registro', { metodo: 'POST', cuerpo: datos, conToken: false }).then(guardarSesion),
+  iniciarSesion: (datos) => peticion('/auth/login', { metodo: 'POST', cuerpo: datos, conToken: false }).then(guardarSesion),
+  async cerrarSesion() {
+    accessToken = null;
+    await peticion('/auth/logout', { metodo: 'POST', conToken: false });
+  },
+  municipios: () => peticion('/municipios', { conToken: false }).then((d) => d.municipios),
+  reportes(filtros) {
+    const consulta = new URLSearchParams(Object.entries(filtros).filter(([, valor]) => valor));
+    return peticionConSesion(`/reportes?${consulta}`).then((d) => d.reportes);
+  },
+  crearReporte: (datos) => peticionConSesion('/reportes', { metodo: 'POST', cuerpo: datos }).then((d) => d.reporte),
+};
