@@ -11,3 +11,8 @@ export function requerirSesion(req, _res, next) {
   }
   next();
 }
+
+export function requerirModeradora(req, _res, next) {
+  if (req.usuaria.rol !== 'moderadora') throw new HttpError(403, 'Solo las moderadoras pueden hacer esto');
+  next();
+}

@@ -7,6 +7,7 @@ import helmet from 'helmet';
 import { config } from './config.js';
 import { manejarErrores, rutaNoEncontrada } from './middleware/errores.js';
 import { authRoutes } from './routes/auth.routes.js';
+import { moderacionRoutes } from './routes/moderacion.routes.js';
 import { municipioRoutes } from './routes/municipio.routes.js';
 import { reportRoutes } from './routes/report.routes.js';
 
@@ -35,6 +36,7 @@ app.use(cookieParser());
 app.use('/api/auth', authRoutes);
 app.use('/api/municipios', municipioRoutes);
 app.use('/api/reportes', reportRoutes);
+app.use('/api/moderacion', moderacionRoutes);
 app.use('/api', rutaNoEncontrada);
 
 // En producción Express sirve la SPA: mismo origen, sin CORS y con SameSite=Strict funcionando.

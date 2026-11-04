@@ -1,6 +1,7 @@
 import { Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react';
 import { api } from '../api/client.js';
 import { CATEGORIAS } from '../constantes.js';
+import AccionesReporte from './AccionesReporte.jsx';
 import Alert, { AvisoEtico } from './Alert.jsx';
 import ErrorBoundary from './ErrorBoundary.jsx';
 import { IconoCategoria } from './Iconos.jsx';
@@ -80,12 +81,19 @@ export default function Dashboard({ usuaria, municipios, mensaje, alCerrarMensaj
     });
   }, [reportes]);
 
+  const alConfirmar = useCallback((id, cambios) => {
+    setReportes((actuales) => actuales.map((r) => (r.id === id ? { ...r, ...cambios } : r)));
+  }, []);
+
   const mostrarLista = esEscritorio || pestaña === 'lista';
   const mostrarMapa = esEscritorio || pestaña === 'mapa';
 
   return (
     <div className="contenedor flex flex-col gap-3 pt-4">
-      <h1 className="text-[1.75rem] lg:text-[2.25rem]">Reportes cerca</h1>
+      <div className="flex items-center justify-between gap-3">
+        <h1 className="text-[1.75rem] lg:text-[2.25rem]">Reportes cerca</h1>
+        {usuaria.rol === 'moderadora' && <a href="#/moderacion" className="btn btn-borde text-sm">Moderación</a>}
+      </div>
 
       {mensaje && <Alert tono="exito" rol="status">{mensaje}</Alert>}
 
@@ -133,7 +141,9 @@ export default function Dashboard({ usuaria, municipios, mensaje, alCerrarMensaj
         {mostrarLista && (
           <section aria-label="Lista de reportes" aria-busy={cargando} tabIndex={esEscritorio ? 0 : undefined} className="flex flex-col lg:max-h-[75vh] lg:overflow-y-auto lg:pr-2">
             <p role="status" className="border-b border-linea pb-2 text-sm text-suave">
-              {cargando ? 'Cargando reportes…' : !error && `${reportes.length} ${reportes.length === 1 ? 'reporte' : 'reportes'}, del más cercano al más lejano`}
+              {cargando && 'Cargando reportes…'}
+              {!cargando && !error && reportes.length === 0 && '0 reportes'}
+              {!cargando && !error && reportes.length > 0 && `${reportes.length} ${reportes.length === 1 ? 'reporte' : 'reportes'}, del más cercano al más lejano`}
             </p>
             {error && (
               <div className="mt-3">
@@ -151,7 +161,9 @@ export default function Dashboard({ usuaria, municipios, mensaje, alCerrarMensaj
             )}
             {reportes.slice(0, visibles).map((reporte) => (
               <div id={`reporte-${reporte.id}`} key={reporte.id}>
-                <ReportCard reporte={reporte} seleccionado={reporte.id === seleccionadoId} />
+                <ReportCard reporte={reporte} seleccionado={reporte.id === seleccionadoId}>
+                  <AccionesReporte reporte={reporte} alConfirmar={alConfirmar} />
+                </ReportCard>
               </div>
             ))}
             {visibles < reportes.length && (

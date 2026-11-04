@@ -284,6 +284,104 @@ test('listado: ordena con Haversine, filtra y no expone datos personales (RF-05,
   assert.equal(filtrados.reportes[0].confirmaciones, 0);
 });
 
+test('refresh simultáneo: la respuesta que pierde no borra la cookie nueva (H3)', async () => {
+  const { cookie } = await registrar();
+  const original = cookie.split(';')[0];
+  const [a, b] = await Promise.all([1, 2].map(() => llamar('/api/auth/refresh', { metodo: 'POST', cookie: original })));
+  assert.deepEqual([a.status, b.status].sort(), [200, 401]);
+  const perdedora = a.status === 401 ? a : b;
+  assert.equal(perdedora.headers.get('set-cookie'), null);
+  assert.equal((await perdedora.json()).campos.reintentable, true);
+  const sinCookie = await (await llamar('/api/auth/refresh', { metodo: 'POST' })).json();
+  assert.equal(sinCookie.campos, undefined);
+});
+
+async function reporteDe(token, puntoReferencia) {
+  const res = await llamar('/api/reportes', { metodo: 'POST', token, cuerpo: reporteValido({ puntoReferencia: `Falla ${puntoReferencia}` }) });
+  return (await res.json()).reporte;
+}
+
+async function moderadora() {
+  const { db } = await import('../src/db/connection.js');
+  contador += 1;
+  const email = `moderadora${contador}@ejemplo.org`;
+  const { cookie } = await registrar({ email });
+  db.prepare("UPDATE usuarias SET rol = 'moderadora' WHERE email = ?").run(email);
+  // El rol se lee de la base al renovar la sesión.
+  const res = await llamar('/api/auth/refresh', { metodo: 'POST', cookie: cookie.split(';')[0] });
+  return (await res.json()).accessToken;
+}
+
+test('confirmar: una vez por usuaria, nunca la propia y refleja el estado (RF-09)', async () => {
+  const { cuerpo: { accessToken: autora } } = await registrar();
+  const { cuerpo: { accessToken: otra } } = await registrar();
+  const reporte = await reporteDe(autora, 'para confirmar');
+  assert.equal(reporte.esMio, true);
+  assert.equal(reporte.confirmadoPorMi, false);
+  const ruta = `/api/reportes/${reporte.id}/confirmaciones`;
+
+  assert.equal((await llamar(ruta, { metodo: 'POST' })).status, 401);
+  assert.equal((await llamar(ruta, { metodo: 'POST', token: autora })).status, 403);
+  const primera = await (await llamar(ruta, { metodo: 'POST', token: otra })).json();
+  assert.deepEqual(primera, { confirmaciones: 1, confirmadoPorMi: true });
+  const repetida = await (await llamar(ruta, { metodo: 'POST', token: otra })).json();
+  assert.equal(repetida.confirmaciones, 1);
+
+  const { reportes } = await (await llamar('/api/reportes', { token: otra })).json();
+  const visto = reportes.find((r) => r.id === reporte.id);
+  assert.equal(visto.confirmaciones, 1);
+  assert.equal(visto.confirmadoPorMi, true);
+  assert.equal(visto.esMio, false);
+  assert.equal((await llamar('/api/reportes/999999/confirmaciones', { metodo: 'POST', token: otra })).status, 404);
+  assert.equal((await llamar('/api/reportes/abc/confirmaciones', { metodo: 'POST', token: otra })).status, 404);
+});
+
+test('denunciar y moderar: flujo completo, permisos y privacidad (RF-10, RF-11)', async () => {
+  const { cuerpo: { accessToken: autora } } = await registrar({ email: 'autora-denunciada@ejemplo.org' });
+  const { cuerpo: { accessToken: otra } } = await registrar({ alias: 'Denunciante secreta', email: 'denunciante@ejemplo.org' });
+  const mod = await moderadora();
+  const reporte = await reporteDe(autora, 'para denunciar');
+  const ruta = `/api/reportes/${reporte.id}/denuncias`;
+
+  const invalida = await llamar(ruta, { metodo: 'POST', token: otra, cuerpo: { motivo: 'abc' } });
+  assert.equal(invalida.status, 400);
+  assert.ok((await invalida.json()).campos.motivo);
+  assert.equal((await llamar(ruta, { metodo: 'POST', token: autora, cuerpo: { motivo: 'Mi propio reporte' } })).status, 403);
+  const ataque = '<img src=x onerror=alert(1)> es falso';
+  assert.equal((await llamar(ruta, { metodo: 'POST', token: otra, cuerpo: { motivo: ataque } })).status, 201);
+  assert.equal((await llamar(ruta, { metodo: 'POST', token: otra, cuerpo: { motivo: 'Otra vez lo mismo' } })).status, 409);
+
+  assert.equal((await llamar('/api/moderacion/denuncias')).status, 401);
+  assert.equal((await llamar('/api/moderacion/denuncias', { token: otra })).status, 403);
+
+  const textoCola = await (await llamar('/api/moderacion/denuncias', { token: mod })).text();
+  assert.ok(!/email|passwordHash|usuariaId|denunciante|ejemplo\.org|<img/i.test(textoCola), textoCola);
+  const denuncia = JSON.parse(textoCola).denuncias.find((d) => d.reporteId === reporte.id);
+  assert.equal(denuncia.motivo, '&lt;img src=x onerror=alert(1)&gt; es falso');
+
+  const resolver = (id, decision, token = mod) =>
+    llamar(`/api/moderacion/denuncias/${id}`, { metodo: 'POST', token, cuerpo: { decision } });
+  assert.equal((await resolver(denuncia.id, 'ocultar', otra)).status, 403);
+  assert.equal((await resolver(denuncia.id, 'borrar')).status, 400);
+  assert.equal((await resolver(999999, 'ocultar')).status, 404);
+  assert.equal((await resolver(denuncia.id, 'ocultar')).status, 204);
+  assert.equal((await resolver(denuncia.id, 'descartar')).status, 409);
+
+  const { reportes } = await (await llamar('/api/reportes', { token: otra })).json();
+  assert.ok(!reportes.some((r) => r.id === reporte.id), 'el reporte oculto no debe listarse');
+  assert.equal((await llamar(`/api/reportes/${reporte.id}/confirmaciones`, { metodo: 'POST', token: otra })).status, 404);
+  const cola = await (await llamar('/api/moderacion/denuncias', { token: mod })).json();
+  assert.ok(!cola.denuncias.some((d) => d.reporteId === reporte.id));
+
+  // Descartar deja el reporte visible.
+  const otroReporte = await reporteDe(autora, 'denuncia descartada');
+  await llamar(`/api/reportes/${otroReporte.id}/denuncias`, { metodo: 'POST', token: otra, cuerpo: { motivo: 'No me parece real' } });
+  const { denuncias } = await (await llamar('/api/moderacion/denuncias', { token: mod })).json();
+  assert.equal((await resolver(denuncias.find((d) => d.reporteId === otroReporte.id).id, 'descartar')).status, 204);
+  const trasDescartar = await (await llamar('/api/reportes', { token: otra })).json();
+  assert.ok(trasDescartar.reportes.some((r) => r.id === otroReporte.id));
+});
+
 test('errores: JSON inválido y rutas desconocidas no filtran detalles internos', async () => {
   const roto = await fetch(`${base}/api/auth/login`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{roto' });
   assert.equal(roto.status, 400);

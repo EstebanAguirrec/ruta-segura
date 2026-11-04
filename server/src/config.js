@@ -16,6 +16,8 @@ export const config = {
   cookieSegura: process.env.COOKIE_SECURE !== 'false',
   // Número de proxies delante de la API (Render, Railway...), para limitar por IP real.
   proxiesConfiables: Number(process.env.TRUST_PROXY) || 0,
+  // Correos separados por comas. Se promueven al arrancar: regístralos antes, porque no hay verificación de correo.
+  moderadoras: (process.env.MODERADORAS || '').split(',').map((e) => e.trim().toLowerCase()).filter(Boolean),
   nominatim: {
     url: process.env.NOMINATIM_URL || 'https://nominatim.openstreetmap.org/search',
     // La política de Nominatim exige identificar la aplicación.
