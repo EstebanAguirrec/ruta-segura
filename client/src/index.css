@@ -1,56 +1,308 @@
 @import 'tailwindcss';
+@import '@fontsource/atkinson-hyperlegible/latin-400.css';
+@import '@fontsource/atkinson-hyperlegible/latin-700.css';
+@import '@fontsource/newsreader/latin-500.css';
+
+/* Tema oscuro por defecto: la app se usa sobre todo de noche. Concepto: morado de la
+   noche y ámbar de un farol encendido. */
+:root {
+  color-scheme: dark;
+  --fondo: #14101c;
+  --superficie: #1e1829;
+  --superficie-2: #2a2238;
+  --linea: #43385a;
+  --linea-fuerte: #8e81a8;
+  --texto: #f4f0f8;
+  --texto-suave: #c4bbd2;
+  --primario: #5b2a86;
+  --sobre-primario: #ffffff;
+  --primario-texto: #cdb2ee;
+  --acento: #f5bc4a;
+  --sobre-acento: #211703;
+  --acento-hover: #ffcd6b;
+  --emergencia: #f28b7d;
+  --sobre-emergencia: #2a0d09;
+  --error: #ff9c8f;
+  --exito: #8fd9a8;
+  --sobre-cat: #14101c;
+
+  --cat-acoso: #f59ab5;
+  --cat-iluminacion: #e4e36c;
+  --cat-desolada: #8fb8f2;
+  --cat-infraestructura: #f7a072;
+  --cat-otro: #6fd6c8;
+}
+
+:root[data-tema='claro'] {
+  color-scheme: light;
+  --fondo: #faf7fc;
+  --superficie: #ffffff;
+  --superficie-2: #f0eaf6;
+  --linea: #d9cfe4;
+  --linea-fuerte: #76698a;
+  --texto: #1e1729;
+  --texto-suave: #544a63;
+  --primario-texto: #5b2a86;
+  --acento-hover: #e7a92f;
+  --emergencia: #a8281b;
+  --sobre-emergencia: #ffffff;
+  --error: #a32a1e;
+  --exito: #1f6b3d;
+  --sobre-cat: #ffffff;
+
+  --cat-acoso: #a8264f;
+  --cat-iluminacion: #666300;
+  --cat-desolada: #2458a6;
+  --cat-infraestructura: #a64b12;
+  --cat-otro: #0f6e64;
+}
+
+@theme inline {
+  --color-fondo: var(--fondo);
+  --color-superficie: var(--superficie);
+  --color-superficie-2: var(--superficie-2);
+  --color-linea: var(--linea);
+  --color-linea-fuerte: var(--linea-fuerte);
+  --color-texto: var(--texto);
+  --color-suave: var(--texto-suave);
+  --color-primario: var(--primario);
+  --color-sobre-primario: var(--sobre-primario);
+  --color-primario-texto: var(--primario-texto);
+  --color-acento: var(--acento);
+  --color-error: var(--error);
+  --color-exito: var(--exito);
+  --font-sans: 'Atkinson Hyperlegible', system-ui, sans-serif;
+  --font-serif: 'Newsreader', Georgia, serif;
+}
+
+@utility contenedor {
+  @apply mx-auto w-full max-w-6xl px-4;
+}
 
 @layer base {
   html {
-    /* Permite ampliar el texto sin romper el diseño (WCAG 1.4.4). */
     -webkit-text-size-adjust: 100%;
   }
 
   body {
-    @apply min-w-[320px] bg-slate-50 text-slate-900 antialiased;
+    @apply min-w-[320px] bg-fondo font-sans text-texto antialiased;
+    line-height: 1.5;
+  }
+
+  h1,
+  h2 {
+    @apply font-serif font-medium text-balance;
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+  }
+
+  a {
+    color: var(--primario-texto);
+    text-underline-offset: 3px;
   }
 
   :focus-visible {
-    @apply outline-3 outline-offset-2 outline-violet-700;
+    outline: 3px solid var(--acento);
+    outline-offset: 2px;
+  }
+  :root[data-tema='claro'] :focus-visible {
+    outline-color: var(--primario);
   }
 }
 
 @layer components {
   /* Objetivo táctil mínimo de 44 x 44 px en todos los controles. */
-  .btn,
-  .btn-primario,
-  .btn-secundario {
-    @apply inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center gap-2 rounded-lg px-4 py-2 text-center font-semibold no-underline transition-colors disabled:cursor-not-allowed disabled:opacity-60;
+  .btn {
+    @apply inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center gap-2 rounded-md px-4 py-2 text-center font-bold no-underline transition-colors disabled:cursor-not-allowed disabled:opacity-60;
+  }
+  .btn-acento {
+    background: var(--acento);
+    color: var(--sobre-acento);
+  }
+  .btn-acento:hover {
+    background: var(--acento-hover);
   }
   .btn-primario {
-    @apply bg-violet-800 text-white hover:bg-violet-900;
+    background: var(--primario);
+    color: var(--sobre-primario);
   }
-  .btn-secundario {
-    @apply border border-slate-400 bg-white text-slate-900 hover:bg-slate-100;
+  .btn-primario:hover {
+    background: #6c349c;
+  }
+  .btn-borde {
+    border: 1px solid var(--linea-fuerte);
+    color: var(--texto);
+  }
+  .btn-borde:hover {
+    background: var(--superficie-2);
+  }
+  .btn-emergencia {
+    background: var(--emergencia);
+    color: var(--sobre-emergencia);
   }
   .campo {
-    @apply block min-h-11 w-full rounded-lg border border-slate-500 bg-white px-3 py-2 text-base text-slate-900;
+    @apply block min-h-12 w-full rounded-md px-3 py-2 text-base;
+    background: var(--superficie);
+    border: 1px solid var(--linea-fuerte);
+    color: var(--texto);
+  }
+  .campo::placeholder {
+    color: var(--texto-suave);
   }
   .campo[aria-invalid='true'] {
-    @apply border-2 border-red-700;
+    border: 2px solid var(--error);
   }
   .etiqueta {
-    @apply mb-1 block font-semibold text-slate-900;
+    @apply mb-1 block font-bold;
   }
   .error-campo {
-    @apply mt-1 text-sm font-medium text-red-800;
+    @apply mt-1 text-sm font-bold text-error;
+  }
+
+  /* Filtros de categoría */
+  .chip {
+    @apply inline-flex min-h-11 shrink-0 cursor-pointer items-center gap-2 rounded-full px-3 text-sm font-bold whitespace-nowrap;
+    border: 1px solid var(--linea-fuerte);
+    background: var(--superficie);
+    color: var(--texto);
+  }
+  .chip svg {
+    color: var(--cat);
+  }
+  .chip[aria-pressed='true'] {
+    background: var(--cat);
+    border-color: var(--cat);
+    color: var(--sobre-cat);
+  }
+  .chip[aria-pressed='true'] svg {
+    color: inherit;
+  }
+
+  .sin-barra {
+    scrollbar-width: none;
+  }
+
+  /* Tono de cada foto: integra las imágenes con el morado de la marca. */
+  .foto {
+    position: relative;
+    overflow: hidden;
+    background: var(--superficie-2);
+  }
+  .foto::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--primario);
+    opacity: 0.16;
+    pointer-events: none;
   }
 }
 
-/* Marcadores del mapa: color e ícono por categoría (RF-07). */
+/* La categoría siempre se indica con ícono y texto, además del color. */
+.cat-todas {
+  --cat: var(--primario-texto);
+}
+.cat-acoso_callejero {
+  --cat: var(--cat-acoso);
+}
+.cat-iluminacion_deficiente {
+  --cat: var(--cat-iluminacion);
+}
+.cat-zona_desolada {
+  --cat: var(--cat-desolada);
+}
+.cat-infraestructura_insegura {
+  --cat: var(--cat-infraestructura);
+}
+.cat-otro {
+  --cat: var(--cat-otro);
+}
+:root[data-tema='claro'] .cat-todas {
+  --sobre-cat: #ffffff;
+}
+
+.insignia-cat {
+  display: inline-flex;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: var(--cat);
+  color: var(--sobre-cat);
+}
+
+/* Barra inferior del celular: se oculta mientras se escribe para no tapar el campo. */
+body:has(main input:not([type='checkbox']):focus, main textarea:focus) .barra-accion {
+  display: none;
+}
+
+/* Mapa */
 .marcador {
   display: flex;
   width: 32px;
   height: 32px;
   align-items: center;
   justify-content: center;
-  border: 2px solid #fff;
+  border: 2px solid var(--fondo);
   border-radius: 50%;
-  box-shadow: 0 1px 4px rgb(0 0 0 / 0.5);
-  font-size: 16px;
+  background: var(--cat);
+  color: var(--sobre-cat);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.55);
+}
+.marcador svg {
+  width: 18px;
+  height: 18px;
+}
+/* Teselas atenuadas de noche: solo es un filtro visual, las teselas siguen siendo las de OpenStreetMap. */
+:root:not([data-tema='claro']) .leaflet-tile-pane {
+  filter: invert(1) hue-rotate(180deg) grayscale(0.55) brightness(0.95) contrast(0.85);
+}
+/* Selector duplicado a propósito: la hoja de Leaflet se carga después, junto con el mapa. */
+.leaflet-container.leaflet-container {
+  background: var(--superficie-2);
+  font-family: var(--font-sans);
+}
+.leaflet-container.leaflet-container a {
+  color: var(--primario-texto);
+}
+.leaflet-container.leaflet-container .leaflet-control-attribution {
+  background: var(--superficie);
+  color: var(--texto);
+}
+.leaflet-container.leaflet-container .leaflet-bar a,
+.leaflet-container.leaflet-container .leaflet-bar a:hover {
+  width: 44px;
+  height: 44px;
+  background: var(--superficie);
+  border-color: var(--linea);
+  color: var(--texto);
+  line-height: 44px;
+}
+.leaflet-container.leaflet-container .leaflet-popup-content-wrapper,
+.leaflet-container.leaflet-container .leaflet-popup-tip {
+  background: var(--superficie);
+  color: var(--texto);
+}
+.leaflet-container.leaflet-container .leaflet-popup-content {
+  margin: 12px 36px 12px 12px;
+  font-size: 0.9375rem;
+}
+.leaflet-container.leaflet-container .leaflet-popup-content h2,
+.leaflet-container.leaflet-container .leaflet-popup-content p {
+  margin: 0;
+}
+.leaflet-container.leaflet-container a.leaflet-popup-close-button {
+  width: 44px;
+  height: 44px;
+  color: var(--texto);
+  font: 22px/44px var(--font-sans);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
 }

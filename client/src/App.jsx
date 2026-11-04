@@ -2,7 +2,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { api, configurarExpiracionDeSesion, renovarSesion } from './api/client.js';
 import AuthForm from './components/AuthForm.jsx';
 import Dashboard from './components/Dashboard.jsx';
-import { Footer, Header } from './components/Layout.jsx';
+import { BarraAccion, Footer, Header } from './components/Layout.jsx';
+import Moderacion from './components/Moderacion.jsx';
 import ReportForm from './components/ReportForm.jsx';
 import Welcome from './components/Welcome.jsx';
 
@@ -65,7 +66,7 @@ export default function App() {
 
   let contenido;
   if (verificando) {
-    contenido = <p role="status" className="p-6 text-center text-slate-700">Cargando…</p>;
+    contenido = <p role="status" className="p-6 text-center text-suave">Cargando…</p>;
   } else if (usuaria && vista === 'nuevo') {
     contenido = (
       <ReportForm
@@ -75,6 +76,8 @@ export default function App() {
         alCancelar={() => irA('reportes')}
       />
     );
+  } else if (usuaria?.rol === 'moderadora' && vista === 'moderacion') {
+    contenido = <Moderacion />;
   } else if (usuaria) {
     contenido = (
       <Dashboard
@@ -82,7 +85,6 @@ export default function App() {
         municipios={municipios}
         mensaje={mensaje}
         alCerrarMensaje={() => setMensaje(null)}
-        alReportar={() => irA('nuevo')}
       />
     );
   } else if (vista === 'login' || vista === 'registro') {
@@ -101,18 +103,19 @@ export default function App() {
   }
 
   return (
-    <div className="flex min-h-dvh flex-col">
-      <a href="#contenido" className="sr-only focus:not-sr-only focus:absolute focus:z-[2000] focus:bg-white focus:p-3" onClick={(e) => {
+    <div className="flex min-h-dvh flex-col pb-[calc(3.75rem+env(safe-area-inset-bottom))] lg:pb-0">
+      <a href="#contenido" className="sr-only focus:not-sr-only focus:absolute focus:z-[2000] focus:bg-superficie focus:p-3" onClick={(e) => {
         e.preventDefault();
         document.getElementById('contenido')?.focus();
       }}>
         Saltar al contenido
       </a>
-      <Header usuaria={usuaria} alSalir={salir} />
-      <main id="contenido" tabIndex={-1} className="mx-auto w-full max-w-6xl flex-1 px-4 py-4 outline-none">
+      <Header usuaria={usuaria} vista={vista} alSalir={salir} />
+      <main id="contenido" tabIndex={-1} className="w-full flex-1 outline-none">
         {contenido}
       </main>
       <Footer />
+      <BarraAccion usuaria={usuaria} vista={vista} />
     </div>
   );
 }

@@ -8,6 +8,8 @@ if (!JWT_SECRET || JWT_SECRET.length < 32) {
 export const config = {
   puerto: Number(process.env.PORT) || 3001,
   dbPath: process.env.DB_PATH || 'data/ruta-segura.db',
+  sqliteWal: process.env.SQLITE_WAL !== 'false',
+  datosDemo: process.env.DATOS_DEMO === 'true',
   jwtSecret: JWT_SECRET,
   jwtExpiraEn: '15m',
   refreshDias: Number(process.env.REFRESH_DIAS) || 7,
@@ -16,6 +18,8 @@ export const config = {
   cookieSegura: process.env.COOKIE_SECURE !== 'false',
   // Número de proxies delante de la API (Render, Railway...), para limitar por IP real.
   proxiesConfiables: Number(process.env.TRUST_PROXY) || 0,
+  // Correos separados por comas. Se promueven al arrancar: regístralos antes, porque no hay verificación de correo.
+  moderadoras: (process.env.MODERADORAS || '').split(',').map((e) => e.trim().toLowerCase()).filter(Boolean),
   nominatim: {
     url: process.env.NOMINATIM_URL || 'https://nominatim.openstreetmap.org/search',
     // La política de Nominatim exige identificar la aplicación.

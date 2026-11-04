@@ -13,7 +13,8 @@ function abrirBaseDeDatos() {
 }
 
 export const db = abrirBaseDeDatos();
-db.pragma('journal_mode = WAL');
+// WAL necesita memoria compartida, que no funciona en discos de red como el /home de Azure App Service.
+db.pragma(`journal_mode = ${config.sqliteWal ? 'WAL' : 'DELETE'}`);
 db.pragma('foreign_keys = ON');
 
 db.exec(fs.readFileSync(path.join(import.meta.dirname, 'schema.sql'), 'utf8'));

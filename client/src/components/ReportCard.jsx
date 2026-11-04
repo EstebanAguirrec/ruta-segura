@@ -1,4 +1,5 @@
 import { CATEGORIAS, FRANJAS } from '../constantes.js';
+import { IconoCategoria } from './Iconos.jsx';
 
 const ENTIDADES = { '&lt;': '<', '&gt;': '>', '&quot;': '"', '&#39;': "'", '&amp;': '&' };
 
@@ -10,28 +11,35 @@ export function textoPlano(texto) {
 
 const formatoFecha = new Intl.DateTimeFormat('es-CO', { day: 'numeric', month: 'short', year: 'numeric' });
 
-export default function ReportCard({ reporte, seleccionado = false, compacta = false }) {
+// Fila de la lista (o contenido del popup del mapa con `compacta`), no una tarjeta.
+export default function ReportCard({ reporte, seleccionado = false, compacta = false, children }) {
   const categoria = CATEGORIAS[reporte.categoria] ?? CATEGORIAS.otro;
   const confirmaciones = reporte.confirmaciones === 1 ? '1 confirmación' : `${reporte.confirmaciones} confirmaciones`;
   return (
-    <article className={compacta ? 'text-slate-900' : `rounded-xl border bg-white p-3 shadow-sm ${seleccionado ? 'border-violet-800 ring-2 ring-violet-800' : 'border-slate-300'}`}>
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <span className={`rounded-full px-2 py-0.5 text-sm font-semibold ${categoria.insignia}`}>
-          <span aria-hidden="true">{categoria.icono}</span> {categoria.etiqueta}
-        </span>
-        {reporte.distanciaKm !== undefined && (
-          <span className="text-sm font-semibold text-slate-800">{reporte.distanciaKm.toFixed(1)} km</span>
-        )}
+    <article className={`${categoria.clase} ${compacta ? '' : `border-b border-linea px-2 py-4 ${seleccionado ? 'bg-superficie-2' : ''}`}`}>
+      <div className="flex items-start gap-3">
+        <span className="insignia-cat"><IconoCategoria categoria={reporte.categoria} /></span>
+        <div className="min-w-0 flex-1">
+          <div className="flex items-baseline justify-between gap-3">
+            <p className="text-sm font-bold text-[var(--cat)]">{categoria.etiqueta}</p>
+            {reporte.distanciaKm !== undefined && (
+              <p className="shrink-0 text-sm font-bold">{reporte.distanciaKm.toFixed(1)} km</p>
+            )}
+          </div>
+          <h2 className="font-sans text-lg leading-snug font-bold tracking-normal break-words">{textoPlano(reporte.puntoReferencia)}</h2>
+          <p className="text-sm text-suave">
+            {reporte.municipio} · {FRANJAS[reporte.franjaHoraria]} · {formatoFecha.format(new Date(reporte.creadoEn))}
+          </p>
+          {reporte.descripcion && <p className="mt-1 break-words">{textoPlano(reporte.descripcion)}</p>}
+          {reporte.ubicacionAproximada && (
+            <p className="mt-1 text-sm text-suave">Ubicación aproximada: centro del municipio.</p>
+          )}
+          <p className="mt-1 text-sm text-suave">
+            {reporte.confirmaciones !== undefined && `${confirmaciones} · `}Por {reporte.alias}
+          </p>
+          {children}
+        </div>
       </div>
-      <h3 className="mt-2 font-bold break-words">{textoPlano(reporte.puntoReferencia)}</h3>
-      <p className="text-sm text-slate-700">
-        {reporte.municipio} · {FRANJAS[reporte.franjaHoraria]} · {formatoFecha.format(new Date(reporte.creadoEn))}
-      </p>
-      {reporte.descripcion && <p className="mt-2 text-sm break-words text-slate-800">{textoPlano(reporte.descripcion)}</p>}
-      {reporte.ubicacionAproximada && (
-        <p className="mt-2 text-sm text-slate-700">Ubicación aproximada: centro del municipio.</p>
-      )}
-      <p className="mt-2 text-sm text-slate-700">{confirmaciones} · Por {reporte.alias}</p>
     </article>
   );
 }

@@ -6,14 +6,14 @@ export function AvisoEtico() {
 }
 
 const TONOS = {
-  aviso: 'border-amber-600 bg-amber-50 text-amber-950',
-  error: 'border-red-700 bg-red-50 text-red-950',
-  exito: 'border-green-700 bg-green-50 text-green-950',
+  aviso: 'border-acento',
+  error: 'border-error',
+  exito: 'border-exito',
 };
 
 export default function Alert({ tono = 'aviso', rol = 'note', children }) {
   return (
-    <div role={rol} className={`rounded-r-lg border-l-4 px-3 py-2 text-sm font-medium ${TONOS[tono]}`}>
+    <div role={rol} className={`border-l-4 bg-superficie px-3 py-2 text-sm ${TONOS[tono]}`}>
       {children}
     </div>
   );

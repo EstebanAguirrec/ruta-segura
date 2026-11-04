@@ -64,14 +64,24 @@ export default function AuthForm({ modo, municipios, errorMunicipios, alReintent
   };
 
   return (
-    <section className="mx-auto max-w-md py-2">
-      <h1 className="mb-4 text-2xl font-bold text-violet-950">{esRegistro ? 'Crear cuenta' : 'Iniciar sesión'}</h1>
+    <div className="contenedor pt-6 lg:grid lg:grid-cols-2 lg:items-start lg:gap-16 lg:pt-10">
+      <figure className="hidden lg:block">
+        <div className="foto aspect-[3/2] rounded-md">
+          <img src="/fotos/bogota-avenida-1280.webp" width="1280" height="853" loading="lazy" decoding="async" alt="Avenida de Bogotá de noche, con luces de carros en movimiento y edificios iluminados." className="size-full object-cover" />
+        </div>
+        <figcaption className="mt-1 text-xs text-suave">
+          Bogotá, Colombia. Foto: <a href="https://unsplash.com/photos/time-lapse-photography-of-city-lights-during-night-time-wwNrN5oRSRE">Giannino Pareja en Unsplash</a>
+        </figcaption>
+        <p className="mt-6 max-w-md font-serif text-2xl">Tu correo nunca se publica. Otras personas solo ven tu alias.</p>
+      </figure>
+    <section className="mx-auto w-full max-w-md lg:mx-0">
+      <h1 className="mb-6 text-[2.25rem]">{esRegistro ? 'Crear cuenta' : 'Iniciar sesión'}</h1>
       <form onSubmit={enviar} noValidate className="flex flex-col gap-4">
         {esRegistro && (
           <div>
             <label htmlFor="alias" className="etiqueta">Alias público</label>
             <input {...propsCampo('alias')} className="campo" autoComplete="nickname" maxLength={30} value={valores.alias} onChange={(e) => cambiar('alias', e.target.value)} />
-            <p className="mt-1 text-sm text-slate-700">Es lo único que otras personas verán. No uses tu nombre real.</p>
+            <p className="mt-1 text-sm text-suave">Es lo único que otras personas verán. No uses tu nombre real.</p>
             {errorDe('alias')}
           </div>
         )}
@@ -94,7 +104,7 @@ export default function AuthForm({ modo, municipios, errorMunicipios, alReintent
                 {municipios.map((m) => <option key={m.id} value={m.id}>{m.nombre}</option>)}
               </select>
               {errorMunicipios && (
-                <button type="button" className="btn-secundario mt-2 w-full text-sm" onClick={alReintentarMunicipios}>
+                <button type="button" className="btn btn-borde mt-2 w-full text-sm" onClick={alReintentarMunicipios}>
                   No se pudo cargar la lista. Reintentar
                 </button>
               )}
@@ -102,8 +112,8 @@ export default function AuthForm({ modo, municipios, errorMunicipios, alReintent
             </div>
             <div>
               <label className="flex min-h-11 cursor-pointer items-start gap-3 py-1">
-                <input {...propsCampo('aceptaPolitica')} type="checkbox" className="mt-0.5 size-6 shrink-0 accent-violet-800" checked={valores.aceptaPolitica} onChange={(e) => cambiar('aceptaPolitica', e.target.checked)} />
-                <span className="text-sm text-slate-800">
+                <input {...propsCampo('aceptaPolitica')} type="checkbox" className="mt-0.5 size-6 shrink-0 accent-[var(--acento)]" checked={valores.aceptaPolitica} onChange={(e) => cambiar('aceptaPolitica', e.target.checked)} />
+                <span className="text-sm text-suave">
                   Autorizo el tratamiento de mis datos según la Ley 1581 de 2012. Mi correo no se publica ni
                   se comparte; solo se muestra mi alias.
                 </span>
@@ -113,13 +123,14 @@ export default function AuthForm({ modo, municipios, errorMunicipios, alReintent
           </>
         )}
         {errorGeneral && <Alert tono="error" rol="alert">{errorGeneral}</Alert>}
-        <button type="submit" className="btn-primario" disabled={enviando}>
+        <button type="submit" className="btn btn-acento" disabled={enviando}>
           {enviando ? 'Un momento…' : esRegistro ? 'Crear cuenta' : 'Entrar'}
         </button>
-        <a href={esRegistro ? '#/login' : '#/registro'} className="btn-secundario">
+        <a href={esRegistro ? '#/login' : '#/registro'} className="btn btn-borde">
           {esRegistro ? 'Ya tengo cuenta' : 'Quiero crear una cuenta'}
         </a>
       </form>
     </section>
+    </div>
   );
 }
