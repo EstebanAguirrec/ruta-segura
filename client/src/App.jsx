@@ -3,6 +3,7 @@ import { api, configurarExpiracionDeSesion, renovarSesion } from './api/client.j
 import AuthForm from './components/AuthForm.jsx';
 import Dashboard from './components/Dashboard.jsx';
 import { BarraAccion, Footer, Header } from './components/Layout.jsx';
+import Moderacion from './components/Moderacion.jsx';
 import ReportForm from './components/ReportForm.jsx';
 import Welcome from './components/Welcome.jsx';
 
@@ -75,6 +76,8 @@ export default function App() {
         alCancelar={() => irA('reportes')}
       />
     );
+  } else if (usuaria?.rol === 'moderadora' && vista === 'moderacion') {
+    contenido = <Moderacion />;
   } else if (usuaria) {
     contenido = (
       <Dashboard

@@ -43,9 +43,26 @@ function guardarSesion(sesion) {
   return sesion.usuaria;
 }
 
+const pedirRenovacion = () => peticion('/auth/refresh', { metodo: 'POST', conToken: false });
+
+// Si otra pestaña acaba de rotar el token, el navegador ya tiene la cookie nueva: basta reintentar.
+async function renovarConReintento() {
+  try {
+    return await pedirRenovacion();
+  } catch (error) {
+    if (!error.campos.reintentable) throw error;
+  }
+  await new Promise((resolver) => setTimeout(resolver, 600));
+  try {
+    return await pedirRenovacion();
+  } catch (error) {
+    throw new ApiError(error.status, error.message);
+  }
+}
+
 // Una sola renovación a la vez: el refresh token rota y solo sirve una vez.
 export function renovarSesion() {
-  renovacionEnCurso ??= peticion('/auth/refresh', { metodo: 'POST', conToken: false })
+  renovacionEnCurso ??= renovarConReintento()
     .then(guardarSesion)
     .finally(() => {
       renovacionEnCurso = null;
@@ -84,4 +101,8 @@ export const api = {
     return peticionConSesion(`/reportes?${consulta}`).then((d) => d.reportes);
   },
   crearReporte: (datos) => peticionConSesion('/reportes', { metodo: 'POST', cuerpo: datos }).then((d) => d.reporte),
+  confirmarReporte: (id) => peticionConSesion(`/reportes/${id}/confirmaciones`, { metodo: 'POST' }),
+  denunciarReporte: (id, motivo) => peticionConSesion(`/reportes/${id}/denuncias`, { metodo: 'POST', cuerpo: { motivo } }),
+  denunciasPendientes: () => peticionConSesion('/moderacion/denuncias').then((d) => d.denuncias),
+  resolverDenuncia: (id, decision) => peticionConSesion(`/moderacion/denuncias/${id}`, { metodo: 'POST', cuerpo: { decision } }),
 };

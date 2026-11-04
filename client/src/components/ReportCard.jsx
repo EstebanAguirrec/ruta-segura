@@ -12,7 +12,7 @@ export function textoPlano(texto) {
 const formatoFecha = new Intl.DateTimeFormat('es-CO', { day: 'numeric', month: 'short', year: 'numeric' });
 
 // Fila de la lista (o contenido del popup del mapa con `compacta`), no una tarjeta.
-export default function ReportCard({ reporte, seleccionado = false, compacta = false }) {
+export default function ReportCard({ reporte, seleccionado = false, compacta = false, children }) {
   const categoria = CATEGORIAS[reporte.categoria] ?? CATEGORIAS.otro;
   const confirmaciones = reporte.confirmaciones === 1 ? '1 confirmación' : `${reporte.confirmaciones} confirmaciones`;
   return (
@@ -34,7 +34,10 @@ export default function ReportCard({ reporte, seleccionado = false, compacta = f
           {reporte.ubicacionAproximada && (
             <p className="mt-1 text-sm text-suave">Ubicación aproximada: centro del municipio.</p>
           )}
-          <p className="mt-1 text-sm text-suave">{confirmaciones} · Por {reporte.alias}</p>
+          <p className="mt-1 text-sm text-suave">
+            {reporte.confirmaciones !== undefined && `${confirmaciones} · `}Por {reporte.alias}
+          </p>
+          {children}
         </div>
       </div>
     </article>

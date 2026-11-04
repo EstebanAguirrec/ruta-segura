@@ -1,0 +1,21 @@
+# Plan gratuito: el disco no persiste. SQLite se borra al reiniciar o tras 15 minutos sin
+# visitas, con cuentas y reportes incluidos. Para conservar datos usa un disco de pago o Railway.
+services:
+  - type: web
+    name: ruta-segura
+    runtime: node
+    plan: free
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/municipios
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: JWT_SECRET
+        generateValue: true
+      - key: TRUST_PROXY
+        value: 1
+      - key: MODERADORAS
+        sync: false
+      - key: NOMINATIM_USER_AGENT
+        sync: false

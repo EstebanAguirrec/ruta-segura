@@ -99,6 +99,8 @@ export async function geocodificar(puntoReferencia, municipio) {
 function aRespuesta({ municipioLatitud, municipioLongitud, ...reporte }) {
   return {
     ...reporte,
+    confirmadoPorMi: Boolean(reporte.confirmadoPorMi),
+    esMio: Boolean(reporte.esMio),
     puntoReferencia: escaparHtml(reporte.puntoReferencia),
     descripcion: reporte.descripcion === null ? null : escaparHtml(reporte.descripcion),
     ubicacionAproximada: reporte.latitud === municipioLatitud && reporte.longitud === municipioLongitud,
@@ -137,11 +139,11 @@ export const reportService = {
     // Las coordenadas nunca se aceptan del cliente.
     const coordenadas = await geocodificar(datos.puntoReferencia, municipio);
     const id = reportRepository.crear({ ...datos, ...coordenadas, usuariaId });
-    return aRespuesta(reportRepository.buscarPorId(id));
+    return aRespuesta(reportRepository.buscarPorId(id, usuariaId));
   },
 
   // RF-05 y RF-06: distancia desde el municipio de origen, de menor a mayor.
-  listarPorCercania({ origenId, municipioId, categoria }) {
+  listarPorCercania({ origenId, municipioId, categoria, usuariaId }) {
     const origen = municipioRepository.buscarPorId(origenId);
     if (!origen) throw errorDeValidacion({ origenId: 'Elige un municipio de la lista' });
     if (categoria && !CATEGORIAS.includes(categoria)) {
@@ -149,7 +151,7 @@ export const reportService = {
     }
 
     return reportRepository
-      .listarVisibles({ municipioId, categoria })
+      .listarVisibles({ municipioId, categoria, usuariaId })
       .map((reporte) => ({
         ...aRespuesta(reporte),
         distanciaKm: Number(

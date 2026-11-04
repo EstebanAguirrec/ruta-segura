@@ -1,0 +1,38 @@
+name: Probar y desplegar en Azure
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: azure-produccion
+  cancel-in-progress: false
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+
+  desplegar:
+    needs: probar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # App Service compila con Oryx para que los módulos nativos coincidan con su sistema.
+      - uses: azure/webapps-deploy@v3
+        with:
+          app-name: ruta-segura
+          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+          package: .

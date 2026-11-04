@@ -58,11 +58,15 @@ export const authController = {
     responderSesion(res, 200, sesion);
   },
 
+  // Un 401 no borra la cookie: con dos pestañas, la que pierde la carrera borraría el token
+  // nuevo que la otra acaba de recibir. Un token inválido simplemente vence solo.
   refresh(req, res) {
+    const token = req.cookies[COOKIE_REFRESH];
     try {
-      responderSesion(res, 200, authService.renovarSesion(req.cookies[COOKIE_REFRESH]));
+      responderSesion(res, 200, authService.renovarSesion(token));
     } catch (error) {
-      res.clearCookie(COOKIE_REFRESH, opcionesCookie);
+      // Avisa al cliente que había cookie: puede ser esa carrera y vale la pena reintentar.
+      if (token) error.campos = { reintentable: true };
       throw error;
     }
   },

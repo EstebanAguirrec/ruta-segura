@@ -63,6 +63,14 @@ npm start
 
 Despliega como un solo servicio y con HTTPS: la cookie de sesión es `Secure` y `SameSite=Strict`, así que no funciona con la API y la SPA en dominios distintos.
 
+**Datos en la nube:** SQLite es un archivo, así que necesita un disco persistente.
+
+- **Azure App Service** (Linux, Node 22): define `DB_PATH=/home/data/ruta-segura.db`, `SQLITE_WAL=false`, `JWT_SECRET`, `TRUST_PROXY=1` y `SCM_DO_BUILD_DURING_DEPLOYMENT=true`, con `npm start` como comando de inicio. Usa una sola instancia.
+- **Despliegue automático en Azure:** cada cambio en `main` ejecuta las pruebas y, si pasan, publica en App Service (`.github/workflows/azure.yml`). Requiere el secreto `AZURE_PUBLISH_PROFILE` en GitHub.
+- **Datos de ejemplo:** `DATOS_DEMO=true` carga 10 reportes ficticios, identificados como ejemplo. Al reiniciar con otro valor se borran. Quítalos antes de recibir usuarias reales.
+- **Railway** (`railway.json`): agrega un volumen montado en `/data` y define `DB_PATH=/data/ruta-segura.db`, `JWT_SECRET` y `TRUST_PROXY=1`.
+- **Render** (`render.yaml`): el plan gratuito no conserva el disco, y cuentas y reportes se borran al reiniciar o tras 15 minutos sin visitas. Sirve solo para una demo.
+
 **Publicar en GitHub** (requiere `gh auth login`; crea un repositorio privado salvo que pases `--public`):
 
 ```bash
@@ -110,6 +118,10 @@ client/src/
 | `GET /api/municipios` | No | Lista de municipios para los formularios. |
 | `GET /api/reportes?origenId=&municipioId=&categoria=` | JWT | Lista por cercanía con Haversine (RF-05, RF-06). `origenId` es desde dónde se mide; `municipioId` filtra. |
 | `POST /api/reportes` | JWT | Crea un reporte y lo geocodifica (RF-04, RF-14). |
+| `POST /api/reportes/:id/confirmaciones` | JWT | "A mí también me pasó": una vez por usuaria, nunca en el reporte propio (RF-09). |
+| `POST /api/reportes/:id/denuncias` | JWT | Denuncia un reporte con un motivo de 5 a 280 caracteres (RF-10). |
+| `GET /api/moderacion/denuncias` | Moderadora | Cola de denuncias pendientes (RF-11). |
+| `POST /api/moderacion/denuncias/:id` | Moderadora | Resuelve con `{ "decision": "ocultar" }` o `"descartar"` (RF-11). |
 
 Los errores de validación responden `400` con `{ "error": "...", "campos": { "campo": "mensaje" } }`.
 
@@ -129,12 +141,14 @@ Modo oscuro por defecto, con opción clara. Morado `#5B2A86` y acento ámbar, co
 
 ## Alcance
 
-Implementado: todos los requisitos Esenciales (RF-01 a RF-07 y RF-14) y RF-13.
+Implementado: todos los requisitos Esenciales (RF-01 a RF-07 y RF-14), RF-09, RF-10, RF-11 y RF-13.
 
-Pendiente: RF-08 (editar y eliminar), RF-09 (confirmar), RF-10 (denunciar), RF-11 (moderación) y RF-12 (eliminar cuenta). Son Condicionales y sus tablas ya existen. Las tarjetas ya muestran el contador de confirmaciones.
+Pendiente: RF-08 (editar y eliminar) y RF-12 (eliminar cuenta). Son Condicionales, pero RF-12 responde al derecho de supresión de la Ley 1581 y debería resolverse antes de recibir usuarias reales.
+
+Para crear una moderadora, regístrala normalmente, agrega su correo a `MODERADORAS` y reinicia el servidor. En ese orden: no hay verificación de correo.
 
 Limitaciones conocidas:
 
-- Si la conexión se corta justo durante una renovación, el refresh token ya consumido no se recupera y hay que iniciar sesión de nuevo.
+- Si la conexión se corta justo durante una renovación, el refresh token ya consumido no se recupera y hay que iniciar sesión de nuevo. Dos pestañas renovando a la vez sí se recuperan solas.
 - Con muchos reportes en una zona, los marcadores se superponen porque no hay agrupación.
 - La caché de geocodificación y el límite de peticiones viven en memoria: suponen una sola instancia del servidor.
