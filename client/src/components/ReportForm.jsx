@@ -87,11 +87,11 @@ export default function ReportForm({ usuaria, municipios, alPublicar, alCancelar
   const restantes = MAX_DESCRIPCION - valores.descripcion.length;
 
   return (
-    <section className="mx-auto max-w-xl">
-      <h1 className="mb-3 text-2xl font-bold text-violet-950">Nuevo reporte</h1>
+    <section className="contenedor max-w-xl pt-6">
+      <h1 className="mb-4 text-[2.25rem]">Nuevo reporte</h1>
       <form onSubmit={enviar} noValidate className="flex flex-col gap-4">
         <AvisoEtico />
-        <p className="text-sm text-slate-700">
+        <p className="text-sm text-suave">
           Describe el lugar, no a personas. Otras usuarias solo verán tu alias.
         </p>
 
@@ -131,20 +131,20 @@ export default function ReportForm({ usuaria, municipios, alPublicar, alCancelar
 
         <div>
           <label htmlFor="descripcion" className="etiqueta">
-            Descripción <span className="font-normal text-slate-700">(opcional)</span>
+            Descripción <span className="font-normal text-suave">(opcional)</span>
           </label>
           <textarea {...propsCampo('descripcion')} rows={3} maxLength={MAX_DESCRIPCION} />
-          <p className="mt-1 text-right text-sm text-slate-700">Quedan {restantes} caracteres</p>
+          <p className="mt-1 text-right text-sm text-suave">Quedan {restantes} caracteres</p>
           {errorDe('descripcion')}
         </div>
 
         {errorGeneral && <Alert tono="error" rol="alert">{errorGeneral}</Alert>}
 
         <div className="flex flex-col gap-3 sm:flex-row-reverse">
-          <button type="submit" className="btn-primario flex-1" disabled={enviando}>
+          <button type="submit" className="btn btn-acento flex-1" disabled={enviando}>
             {enviando ? 'Publicando…' : 'Publicar'}
           </button>
-          <button type="button" className="btn-secundario flex-1" onClick={alCancelar} disabled={enviando}>
+          <button type="button" className="btn btn-borde flex-1" onClick={alCancelar} disabled={enviando}>
             Cancelar
           </button>
         </div>

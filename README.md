@@ -123,6 +123,10 @@ Los errores de validación responden `400` con `{ "error": "...", "campos": { "c
 - **Geocodificación (RF-14, RR-04):** máximo 1 petición por segundo, con caché. Se aceptan solo resultados del municipio elegido. Si Nominatim falla, tarda más de 4 s, no encuentra el lugar o la cola supera 5 s, se usan las coordenadas del municipio y la tarjeta indica "Ubicación aproximada".
 - **Mapa (R12):** se carga aparte, dentro de un `ErrorBoundary`. Si Leaflet o las teselas fallan, la lista, los filtros, el formulario y las líneas de ayuda siguen funcionando.
 
+## Diseño
+
+Modo oscuro por defecto, con opción clara. Morado `#5B2A86` y acento ámbar, con un color e ícono por categoría. Los colores están definidos como variables en `client/src/index.css`. La fuente y la licencia de fotos, tipografías e íconos están en [docs/creditos.md](docs/creditos.md).
+
 ## Alcance
 
 Implementado: todos los requisitos Esenciales (RF-01 a RF-07 y RF-14) y RF-13.
