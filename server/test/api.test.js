@@ -382,6 +382,22 @@ test('denunciar y moderar: flujo completo, permisos y privacidad (RF-10, RF-11)'
   assert.ok(trasDescartar.reportes.some((r) => r.id === otroReporte.id));
 });
 
+test('datos de ejemplo: se identifican, no se duplican, no admiten login y se pueden quitar', async () => {
+  const { cargarDemo, quitarDemo } = await import('../src/db/demo.js');
+  const { cuerpo: { accessToken: token } } = await registrar();
+  const contar = async () => (await (await llamar('/api/reportes', { token })).json()).reportes
+    .filter((r) => r.alias === 'Datos de ejemplo');
+  cargarDemo();
+  cargarDemo();
+  const ejemplos = await contar();
+  assert.equal(ejemplos.length, 10);
+  assert.ok(ejemplos.every((r) => r.descripcion.startsWith('Ejemplo, no es un reporte real:') && !r.ubicacionAproximada));
+  const login = await llamar('/api/auth/login', { metodo: 'POST', cuerpo: { email: 'datos-de-ejemplo@ruta-segura.invalid', password: '!' } });
+  assert.equal(login.status, 401);
+  quitarDemo();
+  assert.equal((await contar()).length, 0);
+});
+
 test('errores: JSON inválido y rutas desconocidas no filtran detalles internos', async () => {
   const roto = await fetch(`${base}/api/auth/login`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{roto' });
   assert.equal(roto.status, 400);

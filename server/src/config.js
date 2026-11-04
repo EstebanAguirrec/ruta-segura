@@ -9,6 +9,7 @@ export const config = {
   puerto: Number(process.env.PORT) || 3001,
   dbPath: process.env.DB_PATH || 'data/ruta-segura.db',
   sqliteWal: process.env.SQLITE_WAL !== 'false',
+  datosDemo: process.env.DATOS_DEMO === 'true',
   jwtSecret: JWT_SECRET,
   jwtExpiraEn: '15m',
   refreshDias: Number(process.env.REFRESH_DIAS) || 7,

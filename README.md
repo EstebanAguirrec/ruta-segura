@@ -66,6 +66,8 @@ Despliega como un solo servicio y con HTTPS: la cookie de sesión es `Secure` y 
 **Datos en la nube:** SQLite es un archivo, así que necesita un disco persistente.
 
 - **Azure App Service** (Linux, Node 22): define `DB_PATH=/home/data/ruta-segura.db`, `SQLITE_WAL=false`, `JWT_SECRET`, `TRUST_PROXY=1` y `SCM_DO_BUILD_DURING_DEPLOYMENT=true`, con `npm start` como comando de inicio. Usa una sola instancia.
+- **Despliegue automático en Azure:** cada cambio en `main` ejecuta las pruebas y, si pasan, publica en App Service (`.github/workflows/azure.yml`). Requiere el secreto `AZURE_PUBLISH_PROFILE` en GitHub.
+- **Datos de ejemplo:** `DATOS_DEMO=true` carga 10 reportes ficticios, identificados como ejemplo. Al reiniciar con otro valor se borran. Quítalos antes de recibir usuarias reales.
 - **Railway** (`railway.json`): agrega un volumen montado en `/data` y define `DB_PATH=/data/ruta-segura.db`, `JWT_SECRET` y `TRUST_PROXY=1`.
 - **Render** (`render.yaml`): el plan gratuito no conserva el disco, y cuentas y reportes se borran al reiniciar o tras 15 minutos sin visitas. Sirve solo para una demo.
 
